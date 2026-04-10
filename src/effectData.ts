@@ -63,4 +63,32 @@ export const effectData = [
     name: 'pixiGlitchFilter',
     jscript: 'pixiGlitchFilter',
   },
+  {
+    name: 'pixiQuadSplitFilter',
+    jscript: 'pixiQuadSplitFilter',
+  },
+  {
+    name: 'pixiWaterRippleFilter',
+    jscript: 'pixiWaterRippleFilter',
+  },
+  {
+    name: 'pxGrid3x3Filter',
+    jscript: 'pxGrid3x3Filter',
+  },
+  {
+    name: 'mtMonitorGlitchWaveFilter',
+    jscript: 'mtMonitorGlitchWaveFilter',
+  },
+  {
+    name: 'mtOldTVFlter',
+    jscript: 'mtOldTVFlter',
+  },
+  {
+    name: 'mtShadertoyTVFilter',
+    jscript: 'mtShadertoyTVFilter',
+  },
+  {
+    name: 'mtFireFilter',
+    jscript: 'mtFireFilter',
+  },
 ];

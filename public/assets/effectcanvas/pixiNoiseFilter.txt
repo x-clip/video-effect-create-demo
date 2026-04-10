@@ -5,48 +5,54 @@
  * destroy() 销毁
  */
 EModule.define('pixiNoiseFilter', [], function () {
-  let filter = null;
 
-  function init(cav, element, store, PIXI) {
-    // 创建噪点滤镜 (strength, quality, resolution, kernelSize)
-    filter = new PIXI.NoiseFilter(0.5, 0.3);
-    filter.id = element.id;
-    store.addFilter(filter);
-  }
+  class Main {
+    constructor() {
+      this.filter = null;
+    }
 
-  // 播放特效
-  function play({ relativeTime, duration, progress }) {
-    filter.enabled = true;
-    filter.seed = Math.sin(relativeTime) * 0.1 + 0.3; // [0.4~0.6]
-  }
+    init(cav, element, store, PIXI) {
+      // 创建噪点滤镜 (strength, quality, resolution, kernelSize)
+      this.filter = new PIXI.NoiseFilter(0.5, 0.3);
+      this.filter.id = element.id;
+      store.addFilter(this.filter);
+    }
 
-  // 停止特效
-  function pause() {
-    filter.enabled = false;
-  }
+    // 播放特效
+    play({ relativeTime, duration, progress }) {
+      this.filter.enabled = true;
+      this.filter.seed = Math.sin(relativeTime) * 0.1 + 0.3; // [0.4~0.6]
+    }
 
-  function randomID(randomLength = 8) {
-    return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36);
-  }
+    // 停止特效
+    pause() {
+      this.filter.enabled = false;
+    }
 
-  // 修改参数
-  function setParams(params) {
-    for (let key in params) {
-      if (params[key]) {
-        filter[key] = params[key];
+    randomID(randomLength = 8) {
+      return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36);
+    }
+
+    // 修改参数
+    setParams(params) {
+      for (let key in params) {
+        if (params[key]) {
+          this.filter[key] = params[key];
+        }
+      }
+    }
+
+    // 销毁特效
+    destroy(store) {
+      console.log('destroy=====>', this.filter);
+      if (this.filter) {
+        this.filter.enabled = false;
+        store.deleteFilter(this.filter.id);
+        this.filter.destroy();
+        this.filter = null;
       }
     }
   }
 
-  // 销毁特效
-  function destroy(store) {
-    if (filter) {
-      filter.enabled = false;
-      store.deleteFilter(filter.id);
-      filter.destroy();
-      filter = null;
-    }
-  }
-
-  return { init, play, pause, destroy, setParams };
+  return Main;
 });

@@ -5,52 +5,56 @@
  * destroy() 销毁
  */
 EModule.define('pixiTwitFilter', [], function () {
-  let filter = null;
-  let size = 0;
+  class Main {
+    constructor() {
+      this.filter = null;
+      this.size = 0;
+    }
 
-  function init(cav, element, store, PIXI) {
-    size = Math.max(store.app.view.width, store.app.view.height);
-    // 创建噪点滤镜
-    filter = new store.filters.TwistFilter({
-      radius: 0,
-      offset: {
-        x: store.app.view.width / 2,
-        y: store.app.view.height / 2,
-      },
-    });
-    filter.id = element.id;
-    store.addFilter(filter);
-  }
+    init(cav, element, store, PIXI) {
+      this.size = Math.max(store.app.view.width, store.app.view.height);
+      // 创建噪点滤镜
+      this.filter = new store.filters.TwistFilter({
+        radius: 0,
+        offset: {
+          x: store.app.view.width / 2,
+          y: store.app.view.height / 2,
+        },
+      });
+      this.filter.id = element.id;
+      store.addFilter(this.filter);
+    }
 
-  // 播放特效
-  function play({ relativeTime, duration, progress }) {
-    filter.enabled = true;
-    filter.radius = size * progress;
-    // if (progress <= 0.5) {
-    //   filter.radius = size * progress * 2;
-    // } else {
-    //   filter.radius = size * (1 - progress) * 2;
-    // }
-  }
+    // 播放特效
+    play({ relativeTime, duration, progress }) {
+      this.filter.enabled = true;
+      this.filter.radius = this.size * progress;
+      // if (progress <= 0.5) {
+      //   filter.radius = size * progress * 2;
+      // } else {
+      //   filter.radius = size * (1 - progress) * 2;
+      // }
+    }
 
-  function randomID(randomLength = 8) {
-    return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36);
-  }
+    randomID(randomLength = 8) {
+      return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36);
+    }
 
-  // 停止特效
-  function pause() {
-    filter.enabled = false;
-  }
+    // 停止特效
+    pause() {
+      this.filter.enabled = false;
+    }
 
-  // 销毁特效
-  function destroy(store) {
-    if (filter) {
-      filter.enabled = false;
-      store.deleteFilter(filter.id);
-      filter.destroy();
-      filter = null;
+    // 销毁特效
+    destroy(store) {
+      if (this.filter) {
+        this.filter.enabled = false;
+        store.deleteFilter(this.filter.id);
+        this.filter.destroy();
+        this.filter = null;
+      }
     }
   }
 
-  return { init, play, pause, destroy };
+  return Main;
 });
